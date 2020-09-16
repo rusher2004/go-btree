@@ -9,7 +9,7 @@ import (
 
 const (
 	charSet    = "abcdefghijklmnopqrstuvwxyz"
-	fileCount  = 100000
+	fileCount  = 1000000
 	fileLength = 10
 	findLength = 10000
 )
@@ -17,21 +17,24 @@ const (
 var knownFiles []Data
 
 func init() {
-	knownFiles = getFiles(10)
+	knownFiles = getFiles(1000)
 }
 
 func main() {
 	rand.Seed(time.Now().Unix())
 
-	files := getFiles(fileLength)
+	// get a slice of mock random metadata
+	files := getFiles(fileCount)
 
+	// take the slice and put it into a binary search tree
 	tree := buildTree(files)
 
+	// run a check to see if we can actually find files
 	findFiles(tree)
 }
 
 // buildTree will take in f and return a pointer to the first node
-// of a tree, sorted by data.fileName
+// of a tree, sorted by Data.fileName
 func buildTree(d []Data) *Tree {
 	t := &Tree{}
 
@@ -72,18 +75,9 @@ func fileName() Data {
 	}
 }
 
+// findFiles will find our known files to validate our Tree.Find()
 func findFiles(t *Tree) {
-	for i := 0; i < findLength; i++ {
-		tempName := fileName().FileName
-		found, err := t.Find(tempName)
-
-		if err != nil {
-			fmt.Printf("%s not found: %s\n", tempName, err.Error())
-		} else {
-			fmt.Printf("found %s at %s\n", found.FileName, found.FilePath)
-		}
-	}
-
+	// find the known files
 	for _, d := range knownFiles {
 		found, err := t.Find(d.FileName)
 

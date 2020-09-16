@@ -11,16 +11,19 @@ type Data struct {
 	FilePath string
 }
 
+// node holds the data values and points to child nodes
 type node struct {
 	Data  Data
 	left  *node
 	right *node
 }
 
+// Tree just holds the pointer to the root node of the tree
 type Tree struct {
 	root *node
 }
 
+// find scans the tree for Data.FileName in nodes, from left to right
 func (n *node) find(s string) (Data, error) {
 	if n.Data.FileName == s {
 		return n.Data, nil
@@ -33,10 +36,9 @@ func (n *node) find(s string) (Data, error) {
 	return Data{}, errors.New("not found")
 }
 
+// insert d into the tree, from left to right
 func (n *node) insert(d Data) {
-	if n == nil {
-		return
-	} else if n.Data.FileName >= d.FileName {
+	if n.Data.FileName >= d.FileName {
 		if n.left == nil {
 			n.left = &node{Data: d, left: nil, right: nil}
 		} else {
@@ -51,6 +53,7 @@ func (n *node) insert(d Data) {
 	}
 }
 
+// print the value in this node, and any child nodes, from left to right
 func (n *node) print() {
 	fmt.Printf("%+v\n", n.Data)
 
@@ -63,6 +66,7 @@ func (n *node) print() {
 	}
 }
 
+// Find a value s in the tree
 func (t *Tree) Find(s string) (Data, error) {
 	if t.root == nil {
 		return Data{}, errors.New("tree is empty")
@@ -73,6 +77,7 @@ func (t *Tree) Find(s string) (Data, error) {
 	return found, err
 }
 
+// Insert d into the tree as root if t is empty, otherwise in the tree as necessary
 func (t *Tree) Insert(d Data) *Tree {
 	if t.root == nil {
 		t.root = &node{Data: d, left: nil, right: nil}
@@ -83,6 +88,7 @@ func (t *Tree) Insert(d Data) *Tree {
 	return t
 }
 
+// Print the whole tree, scanning from left to right
 func (t *Tree) Print() {
 	if t.root == nil {
 		fmt.Println("nothing here.")
