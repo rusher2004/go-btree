@@ -5,18 +5,16 @@ import (
 	"math/rand"
 	"strings"
 	"time"
-
-	"tree/btree"
 )
 
 const (
 	charSet    = "abcdefghijklmnopqrstuvwxyz"
-	fileCount  = 100
+	fileCount  = 100000
 	fileLength = 10
-	findLength = 10
+	findLength = 10000
 )
 
-var knownFiles []btree.Data
+var knownFiles []Data
 
 func init() {
 	knownFiles = getFiles(10)
@@ -29,16 +27,13 @@ func main() {
 
 	tree := buildTree(files)
 
-	tree.Print()
-
 	findFiles(tree)
-
 }
 
 // buildTree will take in f and return a pointer to the first node
 // of a tree, sorted by data.fileName
-func buildTree(d []btree.Data) *btree.Tree {
-	t := &btree.Tree{}
+func buildTree(d []Data) *Tree {
+	t := &Tree{}
 
 	for _, v := range d {
 		t.Insert(v)
@@ -48,8 +43,8 @@ func buildTree(d []btree.Data) *btree.Tree {
 }
 
 // getFiles creates the slice of file metadata that will be inserted into the tree as nodes
-func getFiles(l int) []btree.Data {
-	res := []btree.Data{}
+func getFiles(l int) []Data {
+	res := []Data{}
 
 	for i := 0; i < l; i++ {
 		res = append(res, fileName())
@@ -63,7 +58,7 @@ func getFiles(l int) []btree.Data {
 }
 
 // fileName gives you a random filename ending in `.csv`
-func fileName() btree.Data {
+func fileName() Data {
 	var output strings.Builder
 
 	for i := 0; i < fileLength; i++ {
@@ -71,13 +66,13 @@ func fileName() btree.Data {
 		output.WriteString(string(char))
 	}
 
-	return btree.Data{
+	return Data{
 		FileName: output.String() + ".csv",
 		FilePath: "path/to/this/file",
 	}
 }
 
-func findFiles(t *btree.Tree) {
+func findFiles(t *Tree) {
 	for i := 0; i < findLength; i++ {
 		tempName := fileName().FileName
 		found, err := t.Find(tempName)

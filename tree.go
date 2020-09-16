@@ -1,4 +1,4 @@
-package btree
+package main
 
 import (
 	"errors"
@@ -22,13 +22,12 @@ type Tree struct {
 }
 
 func (n *node) find(s string) (Data, error) {
-	fmt.Println(s, " == ", n.Data.FileName)
 	if n.Data.FileName == s {
 		return n.Data, nil
 	} else if n.Data.FileName > s && n.left != nil {
-		n.left.find(s)
+		return n.left.find(s)
 	} else if n.Data.FileName < s && n.right != nil {
-		n.right.find(s)
+		return n.right.find(s)
 	}
 
 	return Data{}, errors.New("not found")
@@ -71,15 +70,7 @@ func (t *Tree) Find(s string) (Data, error) {
 
 	found, err := t.root.find(s)
 
-	// if t.root.Data.FileName == s {
-	// 	return t.root.Data, nil
-	// } else if t.root.Data.FileName > s {
-	// 	return t.root.left.find(s)
-	// } else if t.root.right.Data.FileName < s {
-	// 	return t.root.right.find(s)
-	// }
-
-	return found, fmt.Errorf("%s not in tree", err.Error())
+	return found, err
 }
 
 func (t *Tree) Insert(d Data) *Tree {
