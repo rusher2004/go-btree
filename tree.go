@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// Data metadate about a file
+// Data metadata about a file
 type Data struct {
 	FileName string
 	FilePath string
