@@ -21,7 +21,7 @@ func init() {
 }
 
 func main() {
-	rand.Seed(time.Now().Unix())
+	rand.New(rand.NewSource(time.Now().Unix()))
 
 	// get a slice of mock random metadata
 	files := getFiles(fileCount)
@@ -30,7 +30,8 @@ func main() {
 	tree := buildTree(files)
 
 	// run a check to see if we can actually find files
-	findFiles(tree)
+	// findFiles(tree)
+	tree.Print()
 }
 
 // buildTree will take in f and return a pointer to the first node
@@ -53,9 +54,7 @@ func getFiles(l int) []Data {
 		res = append(res, fileName())
 	}
 
-	for _, d := range knownFiles {
-		res = append(res, d)
-	}
+	res = append(res, knownFiles...)
 
 	return res
 }

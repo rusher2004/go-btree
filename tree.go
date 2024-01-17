@@ -78,14 +78,12 @@ func (t *Tree) Find(s string) (Data, error) {
 }
 
 // Insert d into the tree as root if t is empty, otherwise in the tree as necessary
-func (t *Tree) Insert(d Data) *Tree {
+func (t *Tree) Insert(d Data) {
 	if t.root == nil {
 		t.root = &node{Data: d, left: nil, right: nil}
 	} else {
 		t.root.insert(d)
 	}
-
-	return t
 }
 
 // Print the whole tree, scanning from left to right
